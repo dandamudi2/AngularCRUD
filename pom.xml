@@ -1,26 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>test</artifactId>
-    <groupId>py.com.volpe</groupId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
+
+    <groupId>com.enterprise</groupId>
+    <artifactId>enterprise-grade-angular</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>minimal-pom</name>
+    <url>http://maven.apache.org</url>
 
     <properties>
-        <node.version>v6.9.1</node.version>
-        <yarn.version>v0.24.6</yarn.version>
-        <frontend-maven-plugin.version>1.4</frontend-maven-plugin.version>
-        <environment>prod</environment>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
     </properties>
+
+    <modules>
+        <module>apps/bar</module>
+        <module>apps/foo</module>
+        <module>apps/foo-bar</module>
+    </modules>
 
     <build>
         <plugins>
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>${frontend-maven-plugin.version}</version>
+                <!-- Use the latest released version:
+                 https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
+                <version>1.6</version>
                 <executions>
                     <execution>
                         <id>install node and yarn</id>
@@ -34,63 +43,17 @@
                         <goals>
                             <goal>yarn</goal>
                         </goals>
-                        <phase>compile</phase>
                         <configuration>
-                            <arguments>install</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>ng build</id>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                        <configuration>
-                            <arguments>run build-${environment}</arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>ng clean</id>
-                        <goals>
-                            <goal>yarn</goal>
-                        </goals>
-                        <phase>clean</phase>
-                        <configuration>
-                            <arguments>run clean</arguments>
+                            <arguments>install --frozen-lockfile --non-interactive</arguments>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <nodeVersion>${node.version}</nodeVersion>
-                    <yarnVersion>${yarn.version}</yarnVersion>
-                </configuration>
-            </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.1.0</version>
-            <configuration>
-              <webXml>web.xml</webXml>
-              <webResources>
-                <resource>
-                  <!-- this is relative to the pom.xml directory -->
-                  <directory>dist</directory>
-                </resource>
-              </webResources>
-            </configuration>
-          </plugin>
-          <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <update>true</update>
-                    <path>/${project.name}##${project.version}</path>
+                    <nodeVersion>v8.9.0</nodeVersion>
+                    <yarnVersion>v1.3.2</yarnVersion>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-
 
 </project>
