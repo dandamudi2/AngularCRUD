@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-header bg-default">
+      <h5 class="card-title">Create City</h5>
+    </div>
+    <div class="card-body">
+      <form #cityForm="ngForm" (ngSubmit)="SaveCity(city)">
+        <div
+          class="form-group"
+          [class.was-validated]="name.invalid && name.touched"
+        >
+          <label class="form-control-label">City Name&nbsp;:</label>
+          <input
+            type="text"
+            name="name"
+            required
+            [(ngModel)]="city.name"
+            #name="ngModel"
+            class="form-control"
+          />
+          <span class="invalid-feedback" >Name is required!</span>
+        </div>
+        <div class="form-group"    >
+          <label class="form-control-label" for="country">Country</label>
+          <select
+            id="country"
+            required
+            name="country"
+            [(ngModel)]="city.country"
+            #country="ngModel"
+            class="form-control"
+          >
+            <option [ngValue]="null">--Select Country--</option>
+            <option *ngFor="let country of countries" [ngValue]="country.id">
+              {{ country.name }}
+            </option>
+          </select>
+          <span  *ngIf="country.errors?.required && country.touched">Country selection is required!</span>
+        </div>
+        <div class="form-group">
+          <label for="PhotoPath">Photo Path&nbsp;:</label>
+          <input
+            type="text"
+            [(ngModel)]="photoPath"
+            name="photoPath"
+            class="form-control"
+            id="photoPath"
+          />
+          <br /><button
+            type="button"
+            class="btn btn-primary"
+            (click)="ShowPreviewImage()"
+          >
+            {{ showPreview ? "Hide" : "Show" }} Preview
+          </button>
+        </div>
+        <div class="form-group" *ngIf="showPreview">
+          <img [src]="photoPath"  alt="" class="imagePhotoPath" />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" [disabled]="cityForm.invalid">
+            Save</button
+          >&nbsp;
+          <button class="btn btn-outline-danger">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {{ cityForm.value | json }}
+  {{country.errors | json}}
+</div>
